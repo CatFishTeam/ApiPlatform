@@ -6,6 +6,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -24,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user_account")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -35,28 +38,48 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"write", "read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"write", "read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"write", "read"})
      */
-    private $mail;
+    private $email;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"write", "read"})
      */
     private $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read"})
      */
     private $password;
+
+    /**
+     * @var string The user clear password
+     *
+     * @Assert\Length(
+     *     min="6",
+     *     groups={"postValidation", "putValidaion"}
+     * )
+     * @Assert\NotEqualTo(
+     *     propertyPath="password",
+     *     groups={"putValidation"}
+     * )
+     * @Groups({"write"})
+     */
+    private $plainPassword;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="passengers")
@@ -97,14 +120,14 @@ class User
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getEmail(): ?string
     {
-        return $this->mail;
+        return $this->email;
     }
 
-    public function setMail(string $mail): self
+    public function setEmail(string $email): self
     {
-        $this->mail = $mail;
+        $this->email = $email;
 
         return $this;
     }
@@ -132,6 +155,74 @@ class User
 
         return $this;
     }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 
     /**
      * @return Collection|Flight[]
