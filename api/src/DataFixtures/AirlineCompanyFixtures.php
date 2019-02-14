@@ -23,6 +23,18 @@ class AirlineCompanyFixtures extends Fixture implements OrderedFixtureInterface
      *
      * @param ObjectManager $manager
      */
+    private $types = [
+        'Schedulded',
+        'Charter',
+        'Cargo',
+        'Governement',
+        'Passenger',
+        'Regional',
+        'Commuter',
+        'State-run',
+        'Air ambulances'
+    ];
+
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -31,6 +43,8 @@ class AirlineCompanyFixtures extends Fixture implements OrderedFixtureInterface
         for ($i = 0; $i < 10; $i++) {
             $airlineCie = new AirlinesCompany();
             $airlineCie->setName($faker->company);
+            $type = $this->types[array_rand($this->types, 1)];
+            $airlineCie->setType($type);
             $location = $locations[array_rand($locations, 1)];
             $airlineCie->setHeadquarterLocation($location);
             $manager->persist($airlineCie);

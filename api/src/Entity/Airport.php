@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,17 +30,20 @@ class Airport
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_departure")
+     * @ApiSubresource(maxDepth=1)
      */
     private $flights_departure;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_destination")
+     * @ApiSubresource(maxDepth=1)
      */
     private $flights_destination;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @ApiSubresource(maxDepth=1)
      */
     private $location;
 

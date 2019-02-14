@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,7 @@ class Plane
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="plane")
+     * @ApiSubresource(maxDepth=1)
      * @Groups({"read"})
      */
     private $flights;
