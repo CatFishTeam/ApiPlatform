@@ -26,14 +26,14 @@ class Luggage
     private $number;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $weight;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="luggage", cascade={"persist", "remove"})
      */
     private $passenger;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $weight;
 
     public function getId(): ?int
     {
@@ -52,18 +52,6 @@ class Luggage
         return $this;
     }
 
-    public function getWeight(): ?float
-    {
-        return $this->weight;
-    }
-
-    public function setWeight(float $weight): self
-    {
-        $this->weight = $weight;
-
-        return $this;
-    }
-
     public function getPassenger(): ?User
     {
         return $this->passenger;
@@ -72,6 +60,18 @@ class Luggage
     public function setPassenger(?User $passenger): self
     {
         $this->passenger = $passenger;
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(float $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }

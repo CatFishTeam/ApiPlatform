@@ -9,13 +9,14 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\Brand;
+use App\Entity\AirlinesCompany;
+use App\Entity\Location;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker;
 
-class BrandFixtures extends Fixture implements OrderedFixtureInterface
+class AirlineCompanyFixtures extends Fixture implements OrderedFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager
@@ -25,12 +26,14 @@ class BrandFixtures extends Fixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
+        $locations = $manager->getRepository(Location::class)->findAll();
 
         for ($i = 0; $i < 10; $i++) {
-            $brand = new Brand();
-            $brand->setName($faker->company);
-            $brand->setFoundedAt($faker->dateTime);
-            $manager->persist($brand);
+            $airlineCie = new AirlinesCompany();
+            $airlineCie->setName($faker->company);
+            $location = $locations[array_rand($locations, 1)];
+            $airlineCie->setHeadquarterLocation($location);
+            $manager->persist($airlineCie);
         }
         $manager->flush();
     }
@@ -42,6 +45,6 @@ class BrandFixtures extends Fixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 1;
+        return 4;
     }
 }

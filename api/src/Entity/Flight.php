@@ -74,8 +74,6 @@ class Flight
     {
         $this->journeys = new ArrayCollection();
         $this->passengers = new ArrayCollection();
-        $this->setCreatedAt(date('Y-m-d H:i:s'));
-        $this->setUpdatedAt(date('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int
