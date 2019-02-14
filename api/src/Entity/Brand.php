@@ -30,6 +30,11 @@ class Brand
      */
     private $models;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $founded_at;
+
     public function __construct()
     {
         $this->models = new ArrayCollection();
@@ -79,6 +84,18 @@ class Brand
                 $model->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFoundedAt(): ?\DateTimeInterface
+    {
+        return $this->founded_at;
+    }
+
+    public function setFoundedAt(?\DateTimeInterface $founded_at): self
+    {
+        $this->founded_at = $founded_at;
 
         return $this;
     }

@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *          "delete",
  *          "get",
- *          "put"={"validation_groups"={"Default", "postValidation"}}
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
  *     },
  *     normalizationContext={"groups"={"read"}},
  *     denormalizationContext={"groups"={"write"}}
@@ -90,6 +90,26 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="passengers")
      */
     private $flights;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="users")
+     */
+    private $address;
 
 
     public function __construct()
@@ -251,6 +271,54 @@ class User implements UserInterface
             $this->flights->removeElement($flight);
             $flight->removePassenger($this);
         }
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Location
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Location $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }

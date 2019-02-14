@@ -30,6 +30,26 @@ class Journey
      */
     private $flights;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $starting_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $ending_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
     public function __construct()
     {
         $this->flights = new ArrayCollection();
@@ -74,6 +94,54 @@ class Journey
         if ($this->flights->contains($flight)) {
             $this->flights->removeElement($flight);
         }
+
+        return $this;
+    }
+
+    public function getStartingDate(): ?\DateTimeInterface
+    {
+        return $this->starting_date;
+    }
+
+    public function setStartingDate(\DateTimeInterface $starting_date): self
+    {
+        $this->starting_date = $starting_date;
+
+        return $this;
+    }
+
+    public function getEndingDate(): ?\DateTimeInterface
+    {
+        return $this->ending_date;
+    }
+
+    public function setEndingDate(\DateTimeInterface $ending_date): self
+    {
+        $this->ending_date = $ending_date;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

@@ -14,6 +14,9 @@
     "api-platform/schema-generator": {
         "version": "v2.1.0-beta.1"
     },
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "composer/semver": {
         "version": "1.4.2"
     },
@@ -98,6 +101,9 @@
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.36"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -175,6 +181,15 @@
     },
     "ralouphie/getallheaders": {
         "version": "2.0.5"
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        }
     },
     "symfony/asset": {
         "version": "v4.0.3"

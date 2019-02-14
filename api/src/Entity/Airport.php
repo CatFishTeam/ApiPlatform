@@ -26,17 +26,6 @@ class Airport
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="airports")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="airports")
-     */
-    private $city;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_departure")
      */
     private $flights_departure;
@@ -45,6 +34,12 @@ class Airport
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_destination")
      */
     private $flights_destination;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $location;
 
     public function __construct()
     {
@@ -65,30 +60,6 @@ class Airport
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
-
-    public function setCity(?City $city): self
-    {
-        $this->city = $city;
 
         return $this;
     }
@@ -151,6 +122,18 @@ class Airport
                 $flightsDestination->setAirportDestination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

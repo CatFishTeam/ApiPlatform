@@ -26,11 +26,6 @@ class Gate
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Terminal", inversedBy="gates")
-     */
-    private $terminal;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="gate")
      */
     private $flights;
