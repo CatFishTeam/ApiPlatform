@@ -43,9 +43,15 @@ class Location
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarter_location")
+     */
+    private $airlinesCompanies;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->airlinesCompanies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +132,37 @@ class Location
             // set the owning side to null (unless already changed)
             if ($user->getAddress() === $this) {
                 $user->setAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AirlinesCompany[]
+     */
+    public function getAirlinesCompanies(): Collection
+    {
+        return $this->airlinesCompanies;
+    }
+
+    public function addAirlinesCompany(AirlinesCompany $airlinesCompany): self
+    {
+        if (!$this->airlinesCompanies->contains($airlinesCompany)) {
+            $this->airlinesCompanies[] = $airlinesCompany;
+            $airlinesCompany->setHeadquarterLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAirlinesCompany(AirlinesCompany $airlinesCompany): self
+    {
+        if ($this->airlinesCompanies->contains($airlinesCompany)) {
+            $this->airlinesCompanies->removeElement($airlinesCompany);
+            // set the owning side to null (unless already changed)
+            if ($airlinesCompany->getHeadquarterLocation() === $this) {
+                $airlinesCompany->setHeadquarterLocation(null);
             }
         }
 

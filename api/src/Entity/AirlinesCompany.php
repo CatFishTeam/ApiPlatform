@@ -30,6 +30,12 @@ class AirlinesCompany
      */
     private $planes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="airlinesCompanies")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $headquarter_location;
+
     public function __construct()
     {
         $this->planes = new ArrayCollection();
@@ -79,6 +85,18 @@ class AirlinesCompany
                 $plane->setAirlinesCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHeadquarterLocation(): ?Location
+    {
+        return $this->headquarter_location;
+    }
+
+    public function setHeadquarterLocation(?Location $headquarter_location): self
+    {
+        $this->headquarter_location = $headquarter_location;
 
         return $this;
     }
