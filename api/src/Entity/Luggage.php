@@ -24,7 +24,7 @@ class Luggage
     private $number;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $weight;
 
@@ -45,12 +45,12 @@ class Luggage
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    public function setWeight(int $weight): self
+    public function setWeight(float $weight): self
     {
         $this->weight = $weight;
 

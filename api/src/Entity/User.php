@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Traits\TimestampableTrait;
 
 /**
  * @ApiResource(
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -97,16 +100,6 @@ class User implements UserInterface
     private $phone;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updated_at;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="users")
      */
     private $address;
@@ -115,6 +108,9 @@ class User implements UserInterface
     public function __construct()
     {
         $this->flights = new ArrayCollection();
+        //$now = new \DateTime();
+        //$this->setCreatedAt($now);
+        //$this->setUpdatedAt(date('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int
@@ -283,30 +279,6 @@ class User implements UserInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
-    {
-        $this->updated_at = $updated_at;
 
         return $this;
     }

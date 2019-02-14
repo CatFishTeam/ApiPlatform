@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\TimestampableTrait;
 
 /**
  * @ApiResource()
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Journey
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,19 +43,12 @@ class Journey
      */
     private $ending_date;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updated_at;
 
     public function __construct()
     {
         $this->flights = new ArrayCollection();
+        $this->setCreatedAt(date('Y-m-d H:i:s'));
+        $this->setUpdatedAt(date('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int
@@ -118,30 +114,6 @@ class Journey
     public function setEndingDate(\DateTimeInterface $ending_date): self
     {
         $this->ending_date = $ending_date;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
-    {
-        $this->updated_at = $updated_at;
 
         return $this;
     }
