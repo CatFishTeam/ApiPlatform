@@ -8,6 +8,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Location;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -15,7 +16,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Faker;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements OrderedFixtureInterface
 {
     private $passwordEncoder;
 
@@ -27,28 +28,32 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
+        $locations = $manager->getRepository(Location::class)->findAll();
 
         $user = new User();
-        $user->setFullName("admin");
-        $user->setUsername("root");
-            $user->setEmail("mael.mayon@free.fr");
-        $user->setPassword($this->passwordEncoder->encodePassword($user, "root"));
-        $user->setCreatedAt($faker->dateTime);
+        $user->setFirstname("root");
+        $user->setLastname("admin");
+        $user->setEmail("mael.mayon@free.fr");
+        $user->setPlainPassword("root");
+        $user->setBirthdate($faker->dateTime);
+        $user->setPhone($faker->phoneNumber);
+        $location = $locations[array_rand($locations, 1)];
+        $user->setAddress($location);
         $manager->persist($user);
-        $manager->flush();
 
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
-            $user->setFullName($faker->name);
-            $user->setUsername($faker->userName);
+            $user->setFirstname($faker->name);
+            $user->setLastname($faker->lastName);
             $user->setEmail($faker->email);
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $faker->password));
-            $user->setCreatedAt($faker->dateTime);
-            $user->setXp($faker->numberBetween(1, 3000));
-            $user->setValidate(true);
-            $user->setToken(md5(random_bytes(20)));
+            $user->setPlainPassword($faker->password);
+            $user->setBirthdate($faker->dateTime);
+            $user->setPhone($faker->phoneNumber);
+            $location = $locations[array_rand($locations, 1)];
+            $user->setAddress($location);
             $manager->persist($user);
         }
+        $manager->flush();
     }
 
     /**
@@ -58,6 +63,6 @@ class UserFixtures extends Fixture
      */
     public function getOrder()
     {
-        return 5;
+        return 9;
     }
 }

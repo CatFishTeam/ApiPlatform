@@ -32,6 +32,11 @@ class Gate
      */
     private $flights;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $terminal;
+
     public function __construct()
     {
         $this->flights = new ArrayCollection();
@@ -81,6 +86,18 @@ class Gate
                 $flight->setGate(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTerminal(): ?string
+    {
+        return $this->terminal;
+    }
+
+    public function setTerminal(?string $terminal): self
+    {
+        $this->terminal = $terminal;
 
         return $this;
     }

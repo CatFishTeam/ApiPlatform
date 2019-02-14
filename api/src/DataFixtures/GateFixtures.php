@@ -9,13 +9,15 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\Brand;
+use App\Entity\AirlinesCompany;
+use App\Entity\Airport;
+use App\Entity\Gate;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker;
 
-class BrandFixtures extends Fixture implements OrderedFixtureInterface
+class GateFixtures extends Fixture implements OrderedFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager
@@ -27,10 +29,10 @@ class BrandFixtures extends Fixture implements OrderedFixtureInterface
         $faker = Faker\Factory::create('fr_FR');
 
         for ($i = 0; $i < 10; $i++) {
-            $brand = new Brand();
-            $brand->setName($faker->company);
-            $brand->setFoundedAt($faker->dateTime);
-            $manager->persist($brand);
+            $gate = new Gate();
+            $gate->setNumber($faker->numberBetween(1, 20));
+            $gate->setTerminal($faker->word);
+            $manager->persist($gate);
         }
         $manager->flush();
     }
@@ -42,6 +44,6 @@ class BrandFixtures extends Fixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 1;
+        return 2;
     }
 }
