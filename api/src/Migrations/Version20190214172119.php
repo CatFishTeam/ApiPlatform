@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190214165253 extends AbstractMigration
+final class Version20190214172119 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -30,8 +30,7 @@ final class Version20190214165253 extends AbstractMigration
         $this->addSql('DROP TABLE terminal');
         $this->addSql('DROP TABLE city');
         $this->addSql('DROP TABLE country');
-        $this->addSql('ALTER TABLE gate ADD terminal VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE airlines_company ADD type VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE airlines_company ALTER headquarter_location_id DROP NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -49,7 +48,6 @@ final class Version20190214165253 extends AbstractMigration
         $this->addSql('CREATE INDEX idx_2d5b0234f92f3e70 ON city (country_id)');
         $this->addSql('CREATE TABLE country (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE city ADD CONSTRAINT fk_2d5b0234f92f3e70 FOREIGN KEY (country_id) REFERENCES country (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE gate DROP terminal');
-        $this->addSql('ALTER TABLE airlines_company DROP type');
+        $this->addSql('ALTER TABLE airlines_company ALTER headquarter_location_id SET NOT NULL');
     }
 }
