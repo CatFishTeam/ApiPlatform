@@ -52,18 +52,6 @@ class Gate
         return $this;
     }
 
-    public function getTerminal(): ?Terminal
-    {
-        return $this->terminal;
-    }
-
-    public function setTerminal(?Terminal $terminal): self
-    {
-        $this->terminal = $terminal;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Flight[]
      */

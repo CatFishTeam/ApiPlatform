@@ -5,23 +5,33 @@ security:
             algorithm: bcrypt
     providers:
         in_memory: { memory: ~ }
+        doctrine_user:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        login:
+            pattern:  ^/login
+            stateless: true
             anonymous: true
-#        login:
-#            pattern:  ^/login
-#            stateless: true
-#            anonymous: true
-#            provider: doctrine_user
-#            json_login:
-#                check_path: /login_check
-#                username_path: username
-#                password_path: password
-#                success_handler: lexik_jwt_authentication.handler.authentication_success
-#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: doctrine_user
+            json_login:
+                check_path: /login_check
+                username_path: username
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        main:
+            pattern:   ^/
+            provider: doctrine_user
+            stateless: true
+            anonymous: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
             # activate different ways to authenticate
 
             # http_basic: true
