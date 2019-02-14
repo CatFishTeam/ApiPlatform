@@ -111,6 +111,11 @@ class User implements UserInterface
      */
     private $address;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Luggage", mappedBy="passenger", cascade={"persist", "remove"})
+     */
+    private $luggage;
+
 
     public function __construct()
     {
@@ -319,6 +324,24 @@ class User implements UserInterface
     public function setAddress(?Location $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getLuggage(): ?Luggage
+    {
+        return $this->luggage;
+    }
+
+    public function setLuggage(?Luggage $luggage): self
+    {
+        $this->luggage = $luggage;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPassenger = $luggage === null ? null : $this;
+        if ($newPassenger !== $luggage->getPassenger()) {
+            $luggage->setPassenger($newPassenger);
+        }
 
         return $this;
     }

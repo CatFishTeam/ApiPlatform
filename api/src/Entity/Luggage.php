@@ -28,6 +28,11 @@ class Luggage
      */
     private $weight;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="luggage", cascade={"persist", "remove"})
+     */
+    private $passenger;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class Luggage
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getPassenger(): ?User
+    {
+        return $this->passenger;
+    }
+
+    public function setPassenger(?User $passenger): self
+    {
+        $this->passenger = $passenger;
 
         return $this;
     }
