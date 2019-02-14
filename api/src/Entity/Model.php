@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -22,13 +24,44 @@ class Model
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("string")
+     * @Assert\Type("alnum")
      */
     private $reference;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("integer")
      */
     private $number_of_seat;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("float")
+     */
+    private $weight;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("float")
+     */
+    private $length;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("float")
+     */
+    private $width;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Brand", inversedBy="models")
@@ -38,6 +71,7 @@ class Model
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="model", orphanRemoval=true)
+     * @Groups({"read"})
      */
     private $planes;
 
@@ -114,6 +148,42 @@ class Model
                 $plane->setModel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(float $weight): self
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getLength(): ?float
+    {
+        return $this->length;
+    }
+
+    public function setLength(float $length): self
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
+    public function getWidth(): ?float
+    {
+        return $this->width;
+    }
+
+    public function setWidth(float $width): self
+    {
+        $this->width = $width;
 
         return $this;
     }

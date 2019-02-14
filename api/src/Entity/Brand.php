@@ -6,6 +6,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ApiResource()
@@ -22,16 +25,21 @@ class Brand
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("string")
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Model", mappedBy="brand", orphanRemoval=true)
+     * @Groups({"read"})
      */
     private $models;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\LessThan("NOW +1 day")
      */
     private $founded_at;
 
