@@ -31,6 +31,16 @@ class Flight
     private $reference;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $departure_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $arrival_date;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plane", inversedBy="flights")
      */
     private $plane;
@@ -60,22 +70,10 @@ class Flight
      */
     private $passengers;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $departure_date;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $arrival_date;
-
     public function __construct()
     {
         $this->journeys = new ArrayCollection();
         $this->passengers = new ArrayCollection();
-        $this->setCreatedAt(date('Y-m-d H:i:s'));
-        $this->setUpdatedAt(date('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int

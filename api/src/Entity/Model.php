@@ -26,7 +26,6 @@ class Model
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
-     * @Assert\Type("string")
      * @Assert\Type("alnum")
      */
     private $reference;
