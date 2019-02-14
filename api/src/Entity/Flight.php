@@ -27,6 +27,9 @@ class Flight
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("alnum")
      */
     private $reference;
 
@@ -37,6 +40,10 @@ class Flight
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Expression(
+     *     "this.getDepartureDate() <= this.getArrivalDate()",
+     *     message="Arrivale date cannot be before departure date !"
+     * )
      */
     private $arrival_date;
 

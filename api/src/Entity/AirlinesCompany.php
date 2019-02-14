@@ -25,8 +25,23 @@ class AirlinesCompany
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("string")
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("string")
+     * @Assert\Expression(
+     *     "this.getType() in ['Schedulded', 'Charter', 'Cargo', 'Governement', 'Passenger', 'Regional', 'Commuter', 'State-run', 'Air ambulances']",
+     *     message="This is not a type acceptable"
+     * )
+     */
+    private $type;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="airlines_company")
@@ -36,14 +51,10 @@ class AirlinesCompany
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="airlinesCompanies")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $headquarter_location;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
 
     public function __construct()
     {
@@ -63,6 +74,18 @@ class AirlinesCompany
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -110,15 +133,4 @@ class AirlinesCompany
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 }
