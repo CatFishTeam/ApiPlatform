@@ -26,11 +26,6 @@ class Gate
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Terminal", inversedBy="gates")
-     */
-    private $terminal;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="gate")
      */
     private $flights;
@@ -53,18 +48,6 @@ class Gate
     public function setNumber(string $number): self
     {
         $this->number = $number;
-
-        return $this;
-    }
-
-    public function getTerminal(): ?Terminal
-    {
-        return $this->terminal;
-    }
-
-    public function setTerminal(?Terminal $terminal): self
-    {
-        $this->terminal = $terminal;
 
         return $this;
     }
