@@ -62,7 +62,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read"})
      */
     private $password;
 
@@ -82,9 +81,16 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
+     * @ORM\Column(type="json_array", nullable=true)
+     * @Groups({"write", "read"})
+     */
+    private $roles;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="passengers")
      */
     private $flights;
+
 
     public function __construct()
     {
@@ -209,16 +215,13 @@ class User implements UserInterface
     {
         $roles = $this->roles;
 
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
+        return $roles;
     }
 
     public function setRoles($roles): self
     {
-        $this->roles = $roles;
+
+        $this->roles =  $roles;
 
         return $this;
     }
