@@ -11,7 +11,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"journey_read"}},
+ *     denormalizationContext={"groups"={"journey_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\JourneyRepository")
  */
 class Journey
@@ -34,6 +46,7 @@ class Journey
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("alnum")
+     * @Groups({"journey_read", "journey_write"})
      */
     private $reference;
 
@@ -42,8 +55,9 @@ class Journey
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
+     * @Groups({"journey_read", "journey_write"})
      */
-    private $starting_date;
+    private $startingDate;
 
     /**
      * @var \DateTime the Journey Ending Date
@@ -54,13 +68,15 @@ class Journey
      *     "NOW",
      *     message="You can't take a trip which start before tooday"
      * )
+     * @Groups({"journey_read", "journey_write"})
      */
-    private $ending_date;
+    private $endingDate;
 
     /**
      * @var Flight the Flights included in the Journey
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Flight", inversedBy="journeys")
+     * @Groups({"journey_read"})
      */
     private $flights;
 
@@ -115,24 +131,24 @@ class Journey
 
     public function getStartingDate(): ?\DateTimeInterface
     {
-        return $this->starting_date;
+        return $this->startingDate;
     }
 
-    public function setStartingDate(\DateTimeInterface $starting_date): self
+    public function setStartingDate(\DateTimeInterface $startingDate): self
     {
-        $this->starting_date = $starting_date;
+        $this->startingDate = $startingDate;
 
         return $this;
     }
 
     public function getEndingDate(): ?\DateTimeInterface
     {
-        return $this->ending_date;
+        return $this->endingDate;
     }
 
-    public function setEndingDate(\DateTimeInterface $ending_date): self
+    public function setEndingDate(\DateTimeInterface $endingDate): self
     {
-        $this->ending_date = $ending_date;
+        $this->endingDate = $endingDate;
 
         return $this;
     }

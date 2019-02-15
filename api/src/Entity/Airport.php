@@ -7,11 +7,24 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"airport_read"}},
+ *     denormalizationContext={"groups"={"airport_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\AirportRepository")
  */
 class Airport
@@ -32,13 +45,15 @@ class Airport
      * @Assert\Type("string")
      * @Assert\NotNull()
      * @Assert\NotBlank()
+     * @Groups({"airport_read","airport_write"})
      */
     private $name;
 
     /**
      * @var Flight the flight departure from this airport
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_departure")
+     * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airportDeparture")
+     * @Groups({"airport_read"})
      * @ApiSubresource(maxDepth=1)
      */
     private $flights_departure;
@@ -46,7 +61,8 @@ class Airport
     /**
      * @var Flight the flight departure to this airport
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_destination")
+     * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airportDestination")
+     * @Groups({"airport_read"})
      * @ApiSubresource(maxDepth=1)
      */
     private $flights_destination;
@@ -56,6 +72,7 @@ class Airport
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"airport_read", "airport_write"})
      * @ApiSubresource(maxDepth=1)
      */
     private $location;

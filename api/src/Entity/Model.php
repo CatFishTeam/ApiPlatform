@@ -11,7 +11,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"model_read"}},
+ *     denormalizationContext={"groups"={"model_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ModelRepository")
  */
 class Model
@@ -32,6 +44,7 @@ class Model
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("alnum")
+     * @Groups({"model_read", "model_write"})
      */
     private $reference;
 
@@ -42,6 +55,7 @@ class Model
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("integer")
+     * @Groups({"model_read", "model_write"})
      */
     private $numberOfSeat;
 
@@ -52,6 +66,7 @@ class Model
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("float")
+     * @Groups({"model_read", "model_write"})
      */
     private $weight;
 
@@ -62,6 +77,7 @@ class Model
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("float")
+     * @Groups({"model_read", "model_write"})
      */
     private $length;
 
@@ -72,6 +88,7 @@ class Model
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("float")
+     * @Groups({"model_read", "model_write"})
      */
     private $width;
 
@@ -80,6 +97,7 @@ class Model
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Brand", inversedBy="models")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"model_read", "model_write"})
      */
     private $brand;
 
@@ -88,7 +106,7 @@ class Model
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="model", orphanRemoval=true)
      * @ApiSubresource(maxDepth=1)
-     * @Groups({"read"})
+     * @Groups({"model_read"})
      */
     private $planes;
 

@@ -7,11 +7,24 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"gate_read"}},
+ *     denormalizationContext={"groups"={"gate_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\GateRepository")
  */
 class Gate
@@ -32,6 +45,7 @@ class Gate
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("alnum")
+     * @Groups({"gate_read", "gate_write"})
      */
     private $number;
 
@@ -42,6 +56,7 @@ class Gate
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("string")
+     * @Groups({"gate_read", "gate_write"})
      */
     private $terminal;
 
@@ -50,6 +65,7 @@ class Gate
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="gate")
      * @ApiSubresource(maxDepth=1)
+     * @Groups({"gate_read"})
      */
     private $flights;
 

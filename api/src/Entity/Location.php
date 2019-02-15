@@ -7,11 +7,24 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"location_read"}},
+ *     denormalizationContext={"groups"={"location_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
  */
 class Location
@@ -32,6 +45,7 @@ class Location
      * @Assert\Type("string")
      * @Assert\NotBlank()
      * @Assert\NotNull()
+     * @Groups({"location_read", "location_write"})
      */
     private $country;
 
@@ -40,6 +54,7 @@ class Location
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
+     * @Groups({"location_read", "location_write"})
      */
     private $city;
 
@@ -50,6 +65,7 @@ class Location
      * @Assert\Type("string")
      * @Assert\NotBlank()
      * @Assert\NotNull()
+     * @Groups({"location_read", "location_write"})
      */
     private $address;
 
@@ -60,6 +76,7 @@ class Location
      * @Assert\Type("alnum")
      * @Assert\NotBlank()
      * @Assert\NotNull()
+     * @Groups({"location_read", "location_write"})
      */
     private $zip_code;
 
@@ -68,6 +85,7 @@ class Location
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="address")
      * @ApiSubresource(maxDepth=1)
+     * @Groups({"location_read"})
      */
     private $users;
 
@@ -76,6 +94,7 @@ class Location
      *
      * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarterLocation")
      * @ApiSubresource(maxDepth=1)
+     * @Groups({"location_read"})
      */
     private $airlinesCompanies;
 
