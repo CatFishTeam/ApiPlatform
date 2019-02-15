@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsFlightInJourney extends Constraint
 {
-    public $message = 'The flight dates are not contained in the journey time lapse';
+    public $message = 'The flight {{ date }} are not contained in the journey time lapse';
 }

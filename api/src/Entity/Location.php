@@ -72,7 +72,7 @@ class Location
     /**
      * @var AirlinesCompany the AirlinesCompanys in the Location
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarter_location")
+     * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarterLocation")
      */
     private $airlinesCompanies;
 

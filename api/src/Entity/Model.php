@@ -42,7 +42,7 @@ class Model
      * @Assert\NotNull()
      * @Assert\Type("integer")
      */
-    private $number_of_seat;
+    private $numberOfSeat;
 
     /**
      * @var float the Model Weight
@@ -114,12 +114,12 @@ class Model
 
     public function getNumberOfSeat(): ?int
     {
-        return $this->number_of_seat;
+        return $this->numberOfSeat;
     }
 
-    public function setNumberOfSeat(int $number_of_seat): self
+    public function setNumberOfSeat(int $numberOfSeat): self
     {
-        $this->number_of_seat = $number_of_seat;
+        $this->numberOfSeat = $numberOfSeat;
 
         return $this;
     }

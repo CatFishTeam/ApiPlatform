@@ -11,7 +11,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"plane_read"}},
+ *     denormalizationContext={"groups"={"plane_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\PlaneRepository")
  */
 class Plane
@@ -32,6 +44,7 @@ class Plane
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("alnum")
+     * @Groups({"plane_read","plane_wirte","airlines_read"})
      */
     private $reference;
 

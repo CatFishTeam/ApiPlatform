@@ -6,11 +6,24 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"airlines_read"}},
+ *     denormalizationContext={"groups"={"airlines_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\AirlinesCompanyRepository")
  */
 class AirlinesCompany
@@ -31,6 +44,7 @@ class AirlinesCompany
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("string")
+     * @Groups({"airlines_read","airlines_write"})
      */
     private $name;
 
@@ -45,6 +59,7 @@ class AirlinesCompany
      *     "this.getType() in ['Schedulded', 'Charter', 'Cargo', 'Governement', 'Passenger', 'Regional', 'Commuter', 'State-run', 'Air ambulances']",
      *     message="This is not a type acceptable"
      * )
+     * @Groups({"airlines_read","airlines_write"})
      */
     private $type;
 
@@ -52,6 +67,7 @@ class AirlinesCompany
      * @var Plane The Planes possessed by this airlines company
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="airlines_company")
+     * @Groups({"airlines_read"})
      */
     private $planes;
 
@@ -60,8 +76,9 @@ class AirlinesCompany
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="airlinesCompanies")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"airlines_read"})
      */
-    private $headquarter_location;
+    private $headquarterLocation;
 
 
     public function __construct()
@@ -131,12 +148,12 @@ class AirlinesCompany
 
     public function getHeadquarterLocation(): ?Location
     {
-        return $this->headquarter_location;
+        return $this->headquarterLocation;
     }
 
-    public function setHeadquarterLocation(?Location $headquarter_location): self
+    public function setHeadquarterLocation(?Location $headquarterLocation): self
     {
-        $this->headquarter_location = $headquarter_location;
+        $this->headquarterLocation = $headquarterLocation;
 
         return $this;
     }

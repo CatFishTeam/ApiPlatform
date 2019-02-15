@@ -19,22 +19,30 @@ class IsFlightInJourneyValidator extends ConstraintValidator
             return;
         }
 
-        if(!is_a(!$value,'Flight')){
-            //dump(json_encode(gettype($value)));
-            throw new UnexpectedValueException($value, 'Flight');
-        }
-
-        $flight = $this->context->getObject();
-        $journey = $flight->getJourneys();
-
-        return json_encode($journey);
-
         /*
-        if (!preg_match('/^[a-zA-Z0-9]+$/', $value, $matches)) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ string }}', $value)
-                ->addViolation();
+        if(!is_a(!$value,'object')){
+            //dump(json_encode(gettype($value)));
+            throw new UnexpectedValueException($value, gettype($value));
         }
         */
+
+        $flight = $this->context->getObject();
+        $journeys = $flight->getJourneys();
+
+        foreach ($journeys as $journey){
+            if( $flight->getDepartureDate() < $journey->getStartingDate() ) //If flight is before journey starting date
+            {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ date }}', $value)
+                    ->addViolation();
+            }
+            if($flight->getArrivalDate() > $journey->getEndingDate())
+            {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ date }}', $value)
+                    ->addViolation();
+            }
+        }
+
     }
 }

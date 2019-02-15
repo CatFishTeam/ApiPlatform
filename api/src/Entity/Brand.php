@@ -50,7 +50,7 @@ class Brand
      * @Assert\DateTime()
      * @Assert\LessThan("NOW +1 day")
      */
-    private $founded_at;
+    private $foundedAt;
 
     public function __construct()
     {
@@ -107,12 +107,12 @@ class Brand
 
     public function getFoundedAt(): ?\DateTimeInterface
     {
-        return $this->founded_at;
+        return $this->foundedAt;
     }
 
-    public function setFoundedAt(?\DateTimeInterface $founded_at): self
+    public function setFoundedAt(?\DateTimeInterface $foundedAt): self
     {
-        $this->founded_at = $founded_at;
+        $this->foundedAt = $foundedAt;
 
         return $this;
     }
