@@ -29,14 +29,15 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
         $locations = $manager->getRepository(Location::class)->findAll();
-
         $user = new User();
         $user->setFirstname("root");
         $user->setLastname("admin");
         $user->setEmail("mael.mayon@free.fr");
-        $user->setPlainPassword("root");
+        $encoded = $this->passwordEncoder->encodePassword($user, "root");
+        $user->setPassword($encoded);
         $user->setBirthdate($faker->dateTime);
         $user->setPhone($faker->phoneNumber);
+        $user->setRoles(["ROLE_ADMIN"]);
         $location = $locations[array_rand($locations, 1)];
         $user->setAddress($location);
         $manager->persist($user);
@@ -46,9 +47,11 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
             $user->setFirstname($faker->name);
             $user->setLastname($faker->lastName);
             $user->setEmail($faker->email);
-            $user->setPlainPassword($faker->password);
+            $encoded = $this->passwordEncoder->encodePassword($user, $faker->password);
+            $user->setPassword($encoded);
             $user->setBirthdate($faker->dateTime);
             $user->setPhone($faker->phoneNumber);
+            $user->setRoles(["ROLE_PASSENGER"]);
             $location = $locations[array_rand($locations, 1)];
             $user->setAddress($location);
             $manager->persist($user);

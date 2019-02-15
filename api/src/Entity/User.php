@@ -85,7 +85,7 @@ class User implements UserInterface
     /**
      * @var string the User Password
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\Type("alnum")
      */
     private $password;
