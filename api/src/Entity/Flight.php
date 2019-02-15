@@ -121,17 +121,15 @@ class Flight
     private $journeys;
 
     /**
-     * @var User the Flight Passengers
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="flights")
-     * @Groups({"flight_read"})
+     * @ORM\OneToMany(targetEntity="App\Entity\PassengerFlightLuggage", mappedBy="flight")
+     * @Groups({"flight_read", "flight_write"})
      */
-    private $passengers;
+    private $passengerFlightLuggage;
 
     public function __construct()
     {
         $this->journeys = new ArrayCollection();
-        $this->passengers = new ArrayCollection();
+        $this->passengerFlightLuggage = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,32 +225,6 @@ class Flight
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getPassengers(): Collection
-    {
-        return $this->passengers;
-    }
-
-    public function addPassenger(User $passenger): self
-    {
-        if (!$this->passengers->contains($passenger)) {
-            $this->passengers[] = $passenger;
-        }
-
-        return $this;
-    }
-
-    public function removePassenger(User $passenger): self
-    {
-        if ($this->passengers->contains($passenger)) {
-            $this->passengers->removeElement($passenger);
-        }
-
-        return $this;
-    }
-
     public function getDepartureDate(): ?\DateTimeInterface
     {
         return $this->departureDate;
@@ -273,6 +245,37 @@ class Flight
     public function setArrivalDate(\DateTimeInterface $arrivalDate): self
     {
         $this->arrivalDate = $arrivalDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PassengerFlightLuggage[]
+     */
+    public function getPassengerFlightLuggage(): Collection
+    {
+        return $this->passengerFlightLuggage;
+    }
+
+    public function addPassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if (!$this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage[] = $passengerFlightLuggage;
+            $passengerFlightLuggage->setFlight($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if ($this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage->removeElement($passengerFlightLuggage);
+            // set the owning side to null (unless already changed)
+            if ($passengerFlightLuggage->getFlight() === $this) {
+                $passengerFlightLuggage->setFlight(null);
+            }
+        }
 
         return $this;
     }

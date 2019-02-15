@@ -132,12 +132,6 @@ class User implements UserInterface
      */
     private $roles;
 
-    /**
-     * @var Flight the User Flights
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="passengers")
-     */
-    private $flights;
 
     /**
      * @var Location the User Address
@@ -154,10 +148,15 @@ class User implements UserInterface
      */
     private $luggage;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PassengerFlightLuggage", mappedBy="passenger")
+     */
+    private $passengerFlightLuggage;
+
 
     public function __construct()
     {
-        $this->flights = new ArrayCollection();
+        $this->passengerFlightLuggage = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -289,35 +288,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-    /**
-     * @return Collection|Flight[]
-     */
-    public function getFlights(): Collection
-    {
-        return $this->flights;
-    }
-
-    public function addFlight(Flight $flight): self
-    {
-        if (!$this->flights->contains($flight)) {
-            $this->flights[] = $flight;
-            $flight->addPassenger($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFlight(Flight $flight): self
-    {
-        if ($this->flights->contains($flight)) {
-            $this->flights->removeElement($flight);
-            $flight->removePassenger($this);
-        }
-
-        return $this;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -355,6 +325,37 @@ class User implements UserInterface
         $newPassenger = $luggage === null ? null : $this;
         if ($newPassenger !== $luggage->getPassenger()) {
             $luggage->setPassenger($newPassenger);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PassengerFlightLuggage[]
+     */
+    public function getPassengerFlightLuggage(): Collection
+    {
+        return $this->passengerFlightLuggage;
+    }
+
+    public function addPassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if (!$this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage[] = $passengerFlightLuggage;
+            $passengerFlightLuggage->setPassenger($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if ($this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage->removeElement($passengerFlightLuggage);
+            // set the owning side to null (unless already changed)
+            if ($passengerFlightLuggage->getPassenger() === $this) {
+                $passengerFlightLuggage->setPassenger(null);
+            }
         }
 
         return $this;
