@@ -45,7 +45,7 @@ class Brand
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("string")
-     * @Groups({"read","write"})
+     * @Groups({"brand_read","brand_write"})
      */
     private $name;
 
@@ -55,7 +55,7 @@ class Brand
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      * @Assert\LessThan("NOW +1 day")
-     * @Groups({"read","write"})
+     * @Groups({"brand_read","brand_write"})
      */
     private $foundedAt;
 
@@ -63,8 +63,8 @@ class Brand
      * @var Model the models owned by the Brand
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Model", mappedBy="brand", orphanRemoval=true)
-     * @Groups({"read"})
      * @ApiSubresource(maxDepth=1)
+     * @Groups({"brand_read"})
      */
     private $models;
 
