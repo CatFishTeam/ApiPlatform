@@ -31,25 +31,24 @@ class ManyToManyFixtures extends Fixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Faker\Factory::create('fr_FR');
         $journeys = $manager->getRepository(Journey::class)->findAll();
         $users = $manager->getRepository(User::class)->findAll();
         $flights = $manager->getRepository(Flight::class)->findAll();
 
-        $it_flights = rand(1, 2);
-        $it_passengers = rand(1, count($users) / 2);
-        for ($i = 0; $i < count($journeys) - 1; $i++) {
+        for ($i = 0; $i < count($journeys); $i++) {
+            $it_flights = rand(1, 2);
             for ($y = 0; $y < $it_flights; $y++) {
                 $flight = $flights[array_rand($flights, 1)];
-                $journey = new Journey($journeys[$i]);
+                $journey = $journeys[$i];
                 $journey->addFlight($flight);
                 $manager->persist($journey);
             }
         }
-        for ($i = 0; $i < count($flights) - 1; $i++) {
+        for ($i = 0; $i < count($flights); $i++) {
+            $it_passengers = rand(1, count($users) / 2);
             for ($y = 0; $y < $it_passengers; $y++) {
                 $passenger = $users[array_rand($users, 1)];
-                $flight = new Flight($flights[$i]);
+                $flight = $flights[$i];
                 $flight->addPassenger($passenger);
                 $manager->persist($flight);
         }
