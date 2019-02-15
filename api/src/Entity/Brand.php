@@ -15,12 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     * collectionOperations={
  *          "get",
- *          "post"={"validation_groups"={"Default", "postValidation"}, "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="Only admins can add brand."}
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
  *     },
  *     itemOperations={
- *          "delete"={"access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="only admins can delete brand."},
+ *          "delete",
  *          "get",
- *          "put"={"validation_groups"={"Default", "putValidation"}, "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="only admins can modify brand."}
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
  *     },
  *     normalizationContext={"groups"={"brand_read"}},
  *     denormalizationContext={"groups"={"brand_write"}}
