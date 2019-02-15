@@ -33,13 +33,13 @@ class IsFlightInJourneyValidator extends ConstraintValidator
             if( $flight->getDepartureDate() < $journey->getStartingDate() ) //If flight is before journey starting date
             {
                 $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ date }}', $value)
+                    ->setParameter('{{ date }}', "Departure Date")
                     ->addViolation();
             }
-            if($flight->getArrivalDate() > $journey->getEndingDate())
+            if($flight->getArrivalDate()  > $journey->getEndingDate())
             {
                 $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ date }}', $value)
+                    ->setParameter('{{ date }}', "Arrival Date")
                     ->addViolation();
             }
         }
