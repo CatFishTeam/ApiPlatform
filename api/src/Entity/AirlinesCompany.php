@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- * collectionOperations={
+ *     * collectionOperations={
  *          "get",
  *          "post"={"validation_groups"={"Default", "postValidation"}}
  *     },
@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *          "put"={"validation_groups"={"Default", "putValidation"}}
  *     },
+ *
  *     normalizationContext={"groups"={"airlines_read"}},
  *     denormalizationContext={"groups"={"airlines_write"}}
  * )

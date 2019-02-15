@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- * collectionOperations={
+ *     * collectionOperations={
  *          "get",
  *          "post"={"validation_groups"={"Default", "postValidation"}}
  *     },
