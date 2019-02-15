@@ -68,11 +68,8 @@ class AirlinesCompany
      * @var Plane The Planes possessed by this airlines company
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="airlines_company")
-<<<<<<< HEAD
      * @Groups({"airlines_read"})
-=======
      * @ApiSubresource(maxDepth=1)
->>>>>>> 8cc650b8b4e38c937b8a169563e0010f8d7fa3b6
      */
     private $planes;
 
