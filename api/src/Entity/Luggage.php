@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -63,6 +65,16 @@ class Luggage
      */
     private $passenger;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PassengerFlightLuggage", mappedBy="luggage")
+     */
+    private $passengerFlightLuggage;
+
+    public function __construct()
+    {
+        $this->passengerFlightLuggage = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +112,37 @@ class Luggage
     public function setWeight(float $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PassengerFlightLuggage[]
+     */
+    public function getPassengerFlightLuggage(): Collection
+    {
+        return $this->passengerFlightLuggage;
+    }
+
+    public function addPassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if (!$this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage[] = $passengerFlightLuggage;
+            $passengerFlightLuggage->setLuggage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassengerFlightLuggage(PassengerFlightLuggage $passengerFlightLuggage): self
+    {
+        if ($this->passengerFlightLuggage->contains($passengerFlightLuggage)) {
+            $this->passengerFlightLuggage->removeElement($passengerFlightLuggage);
+            // set the owning side to null (unless already changed)
+            if ($passengerFlightLuggage->getLuggage() === $this) {
+                $passengerFlightLuggage->setLuggage(null);
+            }
+        }
 
         return $this;
     }
