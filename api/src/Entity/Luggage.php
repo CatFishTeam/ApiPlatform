@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -63,6 +65,16 @@ class Luggage
      */
     private $passenger;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="luggages")
+     */
+    private $flights;
+
+    public function __construct()
+    {
+        $this->flights = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +112,34 @@ class Luggage
     public function setWeight(float $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Flight[]
+     */
+    public function getFlights(): Collection
+    {
+        return $this->flights;
+    }
+
+    public function addFlight(Flight $flight): self
+    {
+        if (!$this->flights->contains($flight)) {
+            $this->flights[] = $flight;
+            $flight->addLuggage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlight(Flight $flight): self
+    {
+        if ($this->flights->contains($flight)) {
+            $this->flights->removeElement($flight);
+            $flight->removeLuggage($this);
+        }
 
         return $this;
     }

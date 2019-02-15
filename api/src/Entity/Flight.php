@@ -124,14 +124,21 @@ class Flight
      * @var User the Flight Passengers
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="flights")
-     * @Groups({"flight_read"})
+     * @Groups({"flight_read", "flight_write"})
      */
     private $passengers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Luggage", inversedBy="flights")
+     * @Groups({"flight_read", "flight_write"})
+     */
+    private $luggages;
 
     public function __construct()
     {
         $this->journeys = new ArrayCollection();
         $this->passengers = new ArrayCollection();
+        $this->luggages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,6 +280,32 @@ class Flight
     public function setArrivalDate(\DateTimeInterface $arrivalDate): self
     {
         $this->arrivalDate = $arrivalDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Luggage[]
+     */
+    public function getLuggages(): Collection
+    {
+        return $this->luggages;
+    }
+
+    public function addLuggage(Luggage $luggage): self
+    {
+        if (!$this->luggages->contains($luggage)) {
+            $this->luggages[] = $luggage;
+        }
+
+        return $this;
+    }
+
+    public function removeLuggage(Luggage $luggage): self
+    {
+        if ($this->luggages->contains($luggage)) {
+            $this->luggages->removeElement($luggage);
+        }
 
         return $this;
     }
