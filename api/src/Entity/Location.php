@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +67,7 @@ class Location
      * @var User the Users in the Location
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="address")
+     * @ApiSubresource(maxDepth=1)
      */
     private $users;
 
@@ -73,6 +75,7 @@ class Location
      * @var AirlinesCompany the AirlinesCompanys in the Location
      *
      * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarterLocation")
+     * @ApiSubresource(maxDepth=1)
      */
     private $airlinesCompanies;
 

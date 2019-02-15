@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -149,6 +150,7 @@ class User implements UserInterface
      * @var Luggage the User Luggage
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Luggage", mappedBy="passenger", cascade={"persist", "remove"})
+     * @ApiSubresource()
      */
     private $luggage;
 
