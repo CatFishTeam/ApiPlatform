@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Location
 {
     /**
+     * @var int the Location Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,31 +25,53 @@ class Location
     private $id;
 
     /**
+     * @var string the Location Country
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $country;
 
     /**
+     * @var string the Location City
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $city;
 
     /**
+     * @var string the Location Address
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $address;
 
     /**
+     * @var string the Location ZIP Code
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("alnum")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $zip_code;
 
     /**
+     * @var User the Users in the Location
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="address")
      */
     private $users;
 
     /**
+     * @var AirlinesCompany the AirlinesCompanys in the Location
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\AirlinesCompany", mappedBy="headquarter_location")
      */
     private $airlinesCompanies;

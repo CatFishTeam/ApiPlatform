@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AirlinesCompany
 {
     /**
+     * @var int The airlines company Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,6 +25,8 @@ class AirlinesCompany
     private $id;
 
     /**
+     * @var string The airlines company Name
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -31,6 +35,8 @@ class AirlinesCompany
     private $name;
 
     /**
+     * @var string The airlines company Type
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -43,11 +49,15 @@ class AirlinesCompany
     private $type;
 
     /**
+     * @var Plane The Planes possessed by this airlines company
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="airlines_company")
      */
     private $planes;
 
     /**
+     * @var Location The Location of this airlines company headquarter
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="airlinesCompanies")
      * @ORM\JoinColumn(nullable=true)
      */

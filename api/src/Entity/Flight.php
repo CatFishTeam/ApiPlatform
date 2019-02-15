@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AcmeAssert;
 
 
 /**
@@ -19,6 +20,8 @@ class Flight
     use TimestampableTrait;
 
     /**
+     * @var int the Flight Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -26,6 +29,8 @@ class Flight
     private $id;
 
     /**
+     * @var string the Flight reference
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -34,45 +39,69 @@ class Flight
     private $reference;
 
     /**
+     * @var \DateTime the Flight Departure Date
+     *
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     * @Assert\GreaterThanOrEqual(
+     *     "NOW",
+     *     message="You can't take a trip which start before tooday"
+     * )
+     * @AcmeAssert\IsFlightInJourney()
      */
     private $departure_date;
 
     /**
+     * @var \DateTime the Flight Arrival Date
+     *
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
      * @Assert\Expression(
      *     "this.getDepartureDate() <= this.getArrivalDate()",
      *     message="Arrivale date cannot be before departure date !"
      * )
+     * @AcmeAssert\IsFlightInJourney()
      */
     private $arrival_date;
 
     /**
+     * @var Plane the Flight Plane
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Plane", inversedBy="flights")
      */
     private $plane;
 
     /**
+     * @var Gate the Flight Gate
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Gate", inversedBy="flights")
      */
     private $gate;
 
     /**
+     * @var Airport the Flight Airport Departure
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Airport", inversedBy="flights_departure")
      */
     private $airport_departure;
 
     /**
+     * @var Airport the Flight Airport Arrival
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Airport", inversedBy="flights_destination")
      */
     private $airport_destination;
 
     /**
+     * @var Journey the Journey the Flight is in
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Journey", mappedBy="flights")
      */
     private $journeys;
 
     /**
+     * @var User the Flight Passengers
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="flights")
      */
     private $passengers;

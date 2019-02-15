@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Model
 {
     /**
+     * @var int the Model Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,6 +25,8 @@ class Model
     private $id;
 
     /**
+     * @var string the Model Reference
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -31,6 +35,8 @@ class Model
     private $reference;
 
     /**
+     * @var int the Model Number Of Seats
+     *
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -39,6 +45,8 @@ class Model
     private $number_of_seat;
 
     /**
+     * @var float the Model Weight
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -47,6 +55,8 @@ class Model
     private $weight;
 
     /**
+     * @var float the Model Length
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -55,6 +65,8 @@ class Model
     private $length;
 
     /**
+     * @var float the Model Width
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -63,12 +75,16 @@ class Model
     private $width;
 
     /**
+     * @var Brand the Brand of the Model
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Brand", inversedBy="models")
      * @ORM\JoinColumn(nullable=false)
      */
     private $brand;
 
     /**
+     * @var Plane the Planes of the Model
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="model", orphanRemoval=true)
      * @Groups({"read"})
      */

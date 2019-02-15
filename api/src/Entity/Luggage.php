@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Luggage
 {
     /**
+     * @var int the Luggage Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,19 +23,27 @@ class Luggage
     private $id;
 
     /**
+     * @var int the Luggage Number
+     *
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $number;
 
     /**
+     * @var float the Luggage Weight
+     *
+     * @ORM\Column(type="float")
+     * @Assert\Type("float")
+     */
+    private $weight;
+
+    /**
+     * @var User the User's Luggage
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="luggage", cascade={"persist", "remove"})
      */
     private $passenger;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $weight;
 
     public function getId(): ?int
     {

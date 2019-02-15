@@ -33,6 +33,8 @@ class User implements UserInterface
     use TimestampableTrait;
 
     /**
+     * @var int the User Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -40,36 +42,55 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string the User Lastname
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"write", "read"})
+     * @Assert\Type("string")
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string the User Firstname
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"write", "read"})
+     * @Assert\Type("string")
      */
     private $firstname;
 
     /**
+     * @var string the User Email
+     *
      * @ORM\Column(type="string", length=255)
      * @Groups({"write", "read"})
+     * @Assert\Email(checkMX=true)
      */
     private $email;
 
     /**
+     * @var \DateTime the User Birth Date
+     *
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime
+     * @Assert\LessThanOrEqual(
+     *     "NOW",
+     *     message="What kind of user is this ?"
+     * )
      * @Groups({"write", "read"})
      */
     private $birthdate;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string the User Password
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("alnum")
      */
     private $password;
 
     /**
-     * @var string The user clear password
+     * @var string the User clear password
      *
      * @Assert\Length(
      *     min="6",
@@ -84,27 +105,49 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
+     * @var string the User Phone
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("alnum")
+     * @Groups({"write", "read"})
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 20,
+     *      minMessage = "Your first phone number must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first phone number cannot be longer than {{ limit }} characters"
+     * )
+     */
+    private $phone;
+
+    /**
+     * @var string the User Role(s)
+     *
      * @ORM\Column(type="json_array", nullable=true)
      * @Groups({"write", "read"})
+     * @Assert\Expression(
+     *     "this.getRoles() != NULL ? this.getRoles() in ['ROLE_USER','ROLE_ADMIN','ROLE_PASSENGER'] : true",
+     *     message="A user must be in one of thoose roles : ROLE_USER, ROLE_ADMIN, ROLE_PASSENGER"
+     * )
      */
     private $roles;
 
     /**
+     * @var Flight the User Flights
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Flight", mappedBy="passengers")
      */
     private $flights;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $phone;
-
-    /**
+     * @var Location the User Address
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="users")
      */
     private $address;
 
     /**
+     * @var Luggage the User Luggage
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\Luggage", mappedBy="passenger", cascade={"persist", "remove"})
      */
     private $luggage;
@@ -113,9 +156,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->flights = new ArrayCollection();
-        //$now = new \DateTime();
-        //$this->setCreatedAt($now);
-        //$this->setUpdatedAt(date('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int

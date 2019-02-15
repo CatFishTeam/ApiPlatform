@@ -9,11 +9,9 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\AirlinesCompany;
 use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Entity\Gate;
-use App\Entity\Journey;
 use App\Entity\Plane;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

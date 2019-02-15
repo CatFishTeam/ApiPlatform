@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Brand
 {
     /**
+     * @var int the Brand Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -24,6 +26,8 @@ class Brand
     private $id;
 
     /**
+     * @var string the Brand Name
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -32,13 +36,18 @@ class Brand
     private $name;
 
     /**
+     * @var Model the models owned by the Brand
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Model", mappedBy="brand", orphanRemoval=true)
      * @Groups({"read"})
      */
     private $models;
 
     /**
+     * @var \DateTime the Brand foundation Date
+     *
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      * @Assert\LessThan("NOW +1 day")
      */
     private $founded_at;

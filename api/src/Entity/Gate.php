@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Gate
 {
     /**
+     * @var int the Gate Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,19 +25,31 @@ class Gate
     private $id;
 
     /**
+     * @var string the Gate number
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("alnum")
      */
     private $number;
 
     /**
+     * @var string the Gate terminal
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("string")
+     */
+    private $terminal;
+
+    /**
+     * @var Flight the Flight of the Gate
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="gate")
      */
     private $flights;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $terminal;
 
     public function __construct()
     {
