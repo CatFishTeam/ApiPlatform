@@ -19,13 +19,6 @@ class IsFlightInJourneyValidator extends ConstraintValidator
             return;
         }
 
-        /*
-        if(!is_a(!$value,'object')){
-            //dump(json_encode(gettype($value)));
-            throw new UnexpectedValueException($value, gettype($value));
-        }
-        */
-
         $flight = $this->context->getObject();
         $journeys = $flight->getJourneys();
 

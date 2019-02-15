@@ -44,14 +44,14 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: [ROLE_ADMIN] }
-        - { path: ^/airlines_companies, roles: [ROLE_ADMIN] }
-        - { path: ^/planes, roles: [ROLE_ADMIN] }
-        - { path: ^/airports, roles: [ROLE_ADMIN] }
-        - { path: ^/locations, roles: [ROLE_ADMIN] }
-        - { path: ^/brands, roles: [ROLE_ADMIN] }
-        - { path: ^/models, roles: [ROLE_ADMIN] }
-        - { path: ^/flights, roles: [ROLE_ADMIN] }
-        - { path: ^/gates, roles: [ROLE_ADMIN] }
-        - { path: ^/journeys, roles: [ROLE_ADMIN] }
-        - { path: ^/users, roles: [ROLE_ADMIN] }
-        - { path: ^/luggages, roles: [ROLE_ADMIN] }
+        #- { path: ^/airlines_companies, roles: [ROLE_ADMIN] }
+        #- { path: ^/planes, roles: [ROLE_ADMIN] }
+        #- { path: ^/airports, roles: [ROLE_ADMIN] }
+        #- { path: ^/locations, roles: [ROLE_ADMIN] }
+        #- { path: ^/brands, roles: [ROLE_ADMIN] }
+        #- { path: ^/models, roles: [ROLE_ADMIN] }
+        #- { path: ^/flights, roles: [ROLE_ADMIN] }
+        #- { path: ^/gates, roles: [ROLE_ADMIN] }
+        #- { path: ^/journeys, roles: [ROLE_ADMIN] }
+        #- { path: ^/users, roles: [ROLE_ADMIN] }
+        #- { path: ^/luggages, roles: [ROLE_ADMIN] }

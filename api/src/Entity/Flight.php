@@ -108,6 +108,10 @@ class Flight
      * @var Airport the Flight Airport Arrival
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Airport", inversedBy="flights_destination")
+     * @Assert\Expression(
+     *     "this.getAirportDeparture() !== this.getAirportDestination()",
+     *     message="You must choose a different airport"
+     * )
      * @Groups({"flight_read", "flight_write"})
      */
     private $airportDestination;
@@ -130,7 +134,7 @@ class Flight
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Luggage", inversedBy="flights")
-     * @Groups({"flight_read", "flight_write"})
+     * @Groups({"flight_read"})
      */
     private $luggages;
 
