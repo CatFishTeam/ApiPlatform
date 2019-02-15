@@ -14,6 +14,7 @@ use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Entity\Gate;
 use App\Entity\Journey;
+use App\Entity\Luggage;
 use App\Entity\Model;
 use App\Entity\Plane;
 use App\Entity\User;
@@ -34,6 +35,7 @@ class ManyToManyFixtures extends Fixture implements OrderedFixtureInterface
         $journeys = $manager->getRepository(Journey::class)->findAll();
         $users = $manager->getRepository(User::class)->findAll();
         $flights = $manager->getRepository(Flight::class)->findAll();
+        $luggages = $manager->getRepository(Luggage::class)->findAll();
 
         for ($i = 0; $i < count($journeys); $i++) {
             $it_flights = rand(1, 2);
@@ -48,8 +50,10 @@ class ManyToManyFixtures extends Fixture implements OrderedFixtureInterface
             $it_passengers = rand(1, count($users) / 2);
             for ($y = 0; $y < $it_passengers; $y++) {
                 $passenger = $users[array_rand($users, 1)];
+                $luggage = $luggages[array_rand($luggages, 1)];
                 $flight = $flights[$i];
                 $flight->addPassenger($passenger);
+                $flight->addLuggage($luggage);
                 $manager->persist($flight);
         }
     }
