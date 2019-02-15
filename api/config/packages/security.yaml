@@ -15,7 +15,7 @@ security:
             security: false
         login:
             pattern:  ^/login
-            stateless: true
+            stateless: false
             anonymous: true
             provider: doctrine_user
             json_login:
@@ -27,7 +27,7 @@ security:
         main:
             pattern:   ^/
             provider: doctrine_user
-            stateless: true
+            stateless: false
             anonymous: true
             guard:
                 authenticators:
@@ -45,3 +45,4 @@ security:
     access_control:
         - { path: ^/, roles: ROLE_ADMIN, host: 444 }
         - { path: ^/, roles: ROLE_USER, host: 8443 }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
