@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Brand
 {
     /**
+     * @var int the Brand Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -25,6 +27,8 @@ class Brand
     private $id;
 
     /**
+     * @var string the Brand Name
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -33,6 +37,8 @@ class Brand
     private $name;
 
     /**
+     * @var Model the models owned by the Brand
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Model", mappedBy="brand", orphanRemoval=true)
      * @Groups({"read"})
      * @ApiSubresource(maxDepth=1)
@@ -40,10 +46,13 @@ class Brand
     private $models;
 
     /**
+     * @var \DateTime the Brand foundation Date
+     *
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      * @Assert\LessThan("NOW +1 day")
      */
-    private $founded_at;
+    private $foundedAt;
 
     public function __construct()
     {
@@ -100,12 +109,12 @@ class Brand
 
     public function getFoundedAt(): ?\DateTimeInterface
     {
-        return $this->founded_at;
+        return $this->foundedAt;
     }
 
-    public function setFoundedAt(?\DateTimeInterface $founded_at): self
+    public function setFoundedAt(?\DateTimeInterface $foundedAt): self
     {
-        $this->founded_at = $founded_at;
+        $this->foundedAt = $foundedAt;
 
         return $this;
     }

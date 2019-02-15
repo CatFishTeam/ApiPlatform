@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Model
 {
     /**
+     * @var int the Model Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -24,6 +26,8 @@ class Model
     private $id;
 
     /**
+     * @var string the Model Reference
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -32,14 +36,18 @@ class Model
     private $reference;
 
     /**
+     * @var int the Model Number Of Seats
+     *
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("integer")
      */
-    private $number_of_seat;
+    private $numberOfSeat;
 
     /**
+     * @var float the Model Weight
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -48,6 +56,8 @@ class Model
     private $weight;
 
     /**
+     * @var float the Model Length
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -56,6 +66,8 @@ class Model
     private $length;
 
     /**
+     * @var float the Model Width
+     *
      * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -64,12 +76,16 @@ class Model
     private $width;
 
     /**
+     * @var Brand the Brand of the Model
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Brand", inversedBy="models")
      * @ORM\JoinColumn(nullable=false)
      */
     private $brand;
 
     /**
+     * @var Plane the Planes of the Model
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Plane", mappedBy="model", orphanRemoval=true)
      * @ApiSubresource(maxDepth=1)
      * @Groups({"read"})
@@ -100,12 +116,12 @@ class Model
 
     public function getNumberOfSeat(): ?int
     {
-        return $this->number_of_seat;
+        return $this->numberOfSeat;
     }
 
-    public function setNumberOfSeat(int $number_of_seat): self
+    public function setNumberOfSeat(int $numberOfSeat): self
     {
-        $this->number_of_seat = $number_of_seat;
+        $this->numberOfSeat = $numberOfSeat;
 
         return $this;
     }

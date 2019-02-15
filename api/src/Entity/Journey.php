@@ -19,6 +19,8 @@ class Journey
     use TimestampableTrait;
 
     /**
+     * @var int the Journey Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -26,24 +28,41 @@ class Journey
     private $id;
 
     /**
+     * @var string the Journey Reference
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("alnum")
      */
     private $reference;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Flight", inversedBy="journeys")
-     */
-    private $flights;
-
-    /**
+     * @var \DateTime the Journey Starting Date
+     *
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
      */
     private $starting_date;
 
     /**
+     * @var \DateTime the Journey Ending Date
+     *
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     * @Assert\GreaterThanOrEqual(
+     *     "NOW",
+     *     message="You can't take a trip which start before tooday"
+     * )
      */
     private $ending_date;
+
+    /**
+     * @var Flight the Flights included in the Journey
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Flight", inversedBy="journeys")
+     */
+    private $flights;
 
 
     public function __construct()

@@ -4,11 +4,13 @@ namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait TimestampableTrait
 {
     /**
      * @var datetime $createdAt
+     * @Assert\DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
@@ -16,6 +18,7 @@ trait TimestampableTrait
 
     /**
      * @var datetime $updatedAt
+     * @Assert\DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      */

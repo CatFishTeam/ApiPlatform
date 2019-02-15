@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Airport
 {
     /**
+     * @var int The airport Id
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -24,23 +26,34 @@ class Airport
     private $id;
 
     /**
+     * @var string The airport Name
+     *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
+     * @var Flight the flight departure from this airport
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_departure")
      * @ApiSubresource(maxDepth=1)
      */
     private $flights_departure;
 
     /**
+     * @var Flight the flight departure to this airport
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Flight", mappedBy="airport_destination")
      * @ApiSubresource(maxDepth=1)
      */
     private $flights_destination;
 
     /**
+     * @var Location the airport Location
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @ApiSubresource(maxDepth=1)
