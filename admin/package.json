@@ -6,6 +6,7 @@
     "@api-platform/admin": "^0.6.1",
     "@babel/runtime": "7.0.0-beta.55",
     "react": "^16.3.0",
+    "react-admin": "^2.7.1",
     "react-dom": "^16.3.0",
     "react-scripts": "^2.1.2"
   },
