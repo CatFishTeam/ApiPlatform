@@ -5,11 +5,24 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"luggage_read"}},
+ *     denormalizationContext={"groups"={"luggage_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\LuggageRepository")
  */
 class Luggage
@@ -28,6 +41,7 @@ class Luggage
      *
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
+     * @Groups({"luggage_read", "luggage_write"})
      */
     private $number;
 
@@ -36,6 +50,7 @@ class Luggage
      *
      * @ORM\Column(type="float")
      * @Assert\Type("float")
+     * @Groups({"luggage_read", "luggage_write"})
      */
     private $weight;
 
@@ -44,6 +59,7 @@ class Luggage
      *
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="luggage", cascade={"persist", "remove"})
      * @ApiSubresource(maxDepth=1)
+     * @Groups({"luggage_read"})
      */
     private $passenger;
 

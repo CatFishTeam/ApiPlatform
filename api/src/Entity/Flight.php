@@ -7,12 +7,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AcmeAssert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"flight_read"}},
+ *     denormalizationContext={"groups"={"flight_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\FlightRepository")
  */
 class Flight
@@ -35,6 +48,7 @@ class Flight
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("alnum")
+     * @Groups({"flight_read","flight_write"})
      */
     private $reference;
 
@@ -48,8 +62,9 @@ class Flight
      *     message="You can't take a trip which start before tooday"
      * )
      * @AcmeAssert\IsFlightInJourney()
+     * @Groups({"flight_read", "flight_write"})
      */
-    private $departure_date;
+    private $departureDate;
 
     /**
      * @var \DateTime the Flight Arrival Date
@@ -61,13 +76,15 @@ class Flight
      *     message="Arrivale date cannot be before departure date !"
      * )
      * @AcmeAssert\IsFlightInJourney()
+     * @Groups({"flight_read", "flight_write"})
      */
-    private $arrival_date;
+    private $arrivalDate;
 
     /**
      * @var Plane the Flight Plane
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Plane", inversedBy="flights")
+     * @Groups({"flight_read", "flight_write"})
      */
     private $plane;
 
@@ -75,6 +92,7 @@ class Flight
      * @var Gate the Flight Gate
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Gate", inversedBy="flights")
+     * @Groups({"flight_read", "flight_write"})
      */
     private $gate;
 
@@ -82,20 +100,23 @@ class Flight
      * @var Airport the Flight Airport Departure
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Airport", inversedBy="flights_departure")
+     * @Groups({"flight_read", "flight_write"})
      */
-    private $airport_departure;
+    private $airportDeparture;
 
     /**
      * @var Airport the Flight Airport Arrival
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Airport", inversedBy="flights_destination")
+     * @Groups({"flight_read", "flight_write"})
      */
-    private $airport_destination;
+    private $airportDestination;
 
     /**
      * @var Journey the Journey the Flight is in
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Journey", mappedBy="flights")
+     * @Groups({"flight_read", "flight_write"})
      */
     private $journeys;
 
@@ -103,6 +124,7 @@ class Flight
      * @var User the Flight Passengers
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="flights")
+     * @Groups({"flight_read"})
      */
     private $passengers;
 
@@ -155,24 +177,24 @@ class Flight
 
     public function getAirportDeparture(): ?Airport
     {
-        return $this->airport_departure;
+        return $this->airportDeparture;
     }
 
-    public function setAirportDeparture(?Airport $airport_departure): self
+    public function setAirportDeparture(?Airport $airportDeparture): self
     {
-        $this->airport_departure = $airport_departure;
+        $this->airportDeparture = $airportDeparture;
 
         return $this;
     }
 
     public function getAirportDestination(): ?Airport
     {
-        return $this->airport_destination;
+        return $this->airportDestination;
     }
 
-    public function setAirportDestination(?Airport $airport_destination): self
+    public function setAirportDestination(?Airport $airportDestination): self
     {
-        $this->airport_destination = $airport_destination;
+        $this->airportDestination = $airportDestination;
 
         return $this;
     }
@@ -233,24 +255,24 @@ class Flight
 
     public function getDepartureDate(): ?\DateTimeInterface
     {
-        return $this->departure_date;
+        return $this->departureDate;
     }
 
-    public function setDepartureDate(\DateTimeInterface $departure_date): self
+    public function setDepartureDate(\DateTimeInterface $departureDate): self
     {
-        $this->departure_date = $departure_date;
+        $this->departureDate = $departureDate;
 
         return $this;
     }
 
     public function getArrivalDate(): ?\DateTimeInterface
     {
-        return $this->arrival_date;
+        return $this->arrivalDate;
     }
 
-    public function setArrivalDate(\DateTimeInterface $arrival_date): self
+    public function setArrivalDate(\DateTimeInterface $arrivalDate): self
     {
-        $this->arrival_date = $arrival_date;
+        $this->arrivalDate = $arrivalDate;
 
         return $this;
     }

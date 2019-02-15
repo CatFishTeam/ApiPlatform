@@ -12,7 +12,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ * collectionOperations={
+ *          "get",
+ *          "post"={"validation_groups"={"Default", "postValidation"}}
+ *     },
+ *     itemOperations={
+ *          "delete",
+ *          "get",
+ *          "put"={"validation_groups"={"Default", "putValidation"}}
+ *     },
+ *     normalizationContext={"groups"={"brand_read"}},
+ *     denormalizationContext={"groups"={"brand_write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\BrandRepository")
  */
 class Brand
@@ -33,8 +45,19 @@ class Brand
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Type("string")
+     * @Groups({"read","write"})
      */
     private $name;
+
+    /**
+     * @var \DateTime the Brand foundation Date
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
+     * @Assert\LessThan("NOW +1 day")
+     * @Groups({"read","write"})
+     */
+    private $foundedAt;
 
     /**
      * @var Model the models owned by the Brand
@@ -44,15 +67,6 @@ class Brand
      * @ApiSubresource(maxDepth=1)
      */
     private $models;
-
-    /**
-     * @var \DateTime the Brand foundation Date
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     * @Assert\LessThan("NOW +1 day")
-     */
-    private $foundedAt;
 
     public function __construct()
     {
@@ -72,6 +86,18 @@ class Brand
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getFoundedAt(): ?\DateTimeInterface
+    {
+        return $this->foundedAt;
+    }
+
+    public function setFoundedAt(?\DateTimeInterface $foundedAt): self
+    {
+        $this->foundedAt = $foundedAt;
 
         return $this;
     }
@@ -103,18 +129,6 @@ class Brand
                 $model->setBrand(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getFoundedAt(): ?\DateTimeInterface
-    {
-        return $this->foundedAt;
-    }
-
-    public function setFoundedAt(?\DateTimeInterface $foundedAt): self
-    {
-        $this->foundedAt = $foundedAt;
 
         return $this;
     }
